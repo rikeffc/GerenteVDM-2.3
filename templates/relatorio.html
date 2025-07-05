@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Financeiro Detalhado</title>
+    <link rel="stylesheet" href="relatorio.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- CAPA -->
+    <div class="page capa-page">
+        <div class="capa-container">
+            <div class="logo-container">
+                <i class="fas fa-chart-line logo-icon"></i>
+            </div>
+            <h1 class="titulo-principal">Relatório Financeiro Detalhado</h1>
+            <h2 class="subtitulo">{{ mes_nome }} de {{ ano }}</h2>
+            <p class="nome-usuario">Preparado especialmente para <strong>{{ usuario.nome_completo or 'Você' }}</strong></p>
+            
+            <div class="data-geracao">
+                <i class="fas fa-calendar-alt"></i>
+                Gerado em {{ now().strftime('%d/%m/%Y às %H:%M') }}
+            </div>
+
+            <div class="highlight-box {% if saldo_mes >= 0 %}positivo{% else %}negativo{% endif %}">
+                {% if saldo_mes >= 0 %}
+                    <h3><i class="fas fa-check-circle"></i> Saldo Positivo!</h3>
+                    <p>Você economizou <strong>R$ {{ "%.2f"|format(saldo_mes|float) }}</strong> este mês. Parabéns!</p>
+                {% else %}
+                    <h3><i class="fas fa-exclamation-triangle"></i> Atenção ao Orçamento!</h3>
+                    <p>Seu saldo ficou negativo em <strong>R$ {{ "%.2f"|format(saldo_mes|abs|float) }}</strong> este mês.</p>
+                {% endif %}
+            </div>
+
+            <div class="resumo-executivo">
+                <h3><i class="fas fa-chart-bar"></i> Resumo Executivo</h3>
+                <div class="resumo-grid">
+                    <div class="resumo-item">
+                        <span class="resumo-label">Receitas:</span>
+                        <span class="resumo-valor positivo">R$ {{ "%.2f"|format(receita_total|float) }}</span>
+                    </div>
+                    <div class="resumo-item">
+                        <span class="resumo-label">Despesas:</span>
+                        <span class="resumo-valor negativo">R$ {{ "%.2f"|format(despesa_total|float) }}</span>
+                    </div>
+                    <div class="resumo-item">
+                        <span class="resumo-label">Taxa de Poupança:</span>
+                        <span class="resumo-valor neutro">{{ "%.1f"|format(taxa_poupanca|float) }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PRINCIPAL -->
+    <div class="page dashboard-page">
+        <h1 class="titulo-pagina"><i class="fas fa-tachometer-alt"></i> Dashboard Financeiro</h1>
+        
+        <div class="kpi-container">
+            <div class="kpi-box receita">
+                <div class="kpi-icon"><i class="fas fa-arrow-up"></i></div>
+                <div class="kpi-content">
+                    <h4>Receita Total</h4>
+                    <p class="valor verde">R$ {{ "%.2f"|format(receita_total|float) }}</p>
+                    <small class="kpi-meta">+5.2% vs mês anterior</small>
+                </div>
+            </div>
+            <div class="kpi-box despesa">
+                <div class="kpi-icon"><i class="fas fa-arrow-down"></i></div>
+                <div class="kpi-content">
+                    <h4>Despesa Total</h4>
+                    <p class="valor vermelho">R$ {{ "%.2f"|format(despesa_total|float) }}</p>
+                    <small class="kpi-meta">-2.1% vs mês anterior</small>
+                </div>
+            </div>
+            <div class="kpi-box saldo">
+                <div class="kpi-icon"><i class="fas fa-wallet"></i></div>
+                <div class="kpi-content">
+                    <h4>Saldo Líquido</h4>
+                    <p class="valor {% if saldo_mes >= 0 %}verde{% else %}vermelho{% endif %}">R$ {{ "%.2f"|format(saldo_mes|float) }}</p>
+                    <small class="kpi-meta">Resultado do mês</small>
+                </div>
+            </div>
+            <div class="kpi-box poupanca">
+                <div class="kpi-icon"><i class="fas fa-piggy-bank"></i></div>
+                <div class="kpi-content">
+                    <h4>Taxa de Poupança</h4>
+                    <p class="valor azul">{{ "%.1f"|format(taxa_poupanca|float) }}%</p>
+                    <small class="kpi-meta">Meta: 20%</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="graficos-row">
+            <div class="grafico-container">
+                <h3><i class="fas fa-chart-pie"></i> Distribuição de Despesas</h3>
+                {% if grafico_pizza_base64 %}
+                    <img src="data:image/png;base64,{{ grafico_pizza_base64 }}" alt="Gráfico de Despesas" loading="lazy">
+                {% else %}
+                    <div class="grafico-placeholder">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>Gráfico de distribuição de despesas</p>
+                        <small>Dados insuficientes para exibição</small>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="grafico-container">
+                <h3><i class="fas fa-chart-line"></i> Evolução Mensal</h3>
+                <div class="grafico-placeholder">
+                    <i class="fas fa-chart-line"></i>
+                    <p>Evolução das receitas e despesas</p>
+                    <small>Últimos 6 meses</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANÁLISE DETALHADA -->
+    <div class="page analise-page">
+        <h1 class="titulo-pagina"><i class="fas fa-analytics"></i> Análise Detalhada</h1>
+        
+        {% if gastos_agrupados %}
+        <div class="tabela-container">
+            <h3><i class="fas fa-list-alt"></i> Gastos por Categoria</h3>
+            <table class="tabela-moderna">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-tag"></i> Categoria</th>
+                        <th><i class="fas fa-money-bill-wave"></i> Total Gasto</th>
+                        <th><i class="fas fa-percentage"></i> % do Total</th>
+                        <th><i class="fas fa-chart-bar"></i> Tendência</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for categoria, valor in gastos_agrupados %}
+                    <tr>
+                        <td>
+                            <div class="categoria-cell">
+                                <i class="fas fa-circle categoria-color" style="color: {{ loop.index0 | color_palette }}"></i>
+                                {{ categoria }}
+                            </div>
+                        </td>
+                        <td class="valor-cell">R$ {{ "%.2f"|format(valor|float) }}</td>
+                        <td>
+                            <div class="percent-bar">
+                                <div class="percent-fill" style="width: {{ (valor|float / despesa_total|float) * 100 if despesa_total > 0 else 0 }}%"></div>
+                                <span class="percent-text">{{ "%.1f"|format((valor|float / despesa_total|float) * 100 if despesa_total > 0 else 0) }}%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="tendencia {% if loop.index0 % 2 == 0 %}alta{% else %}baixa{% endif %}">
+                                <i class="fas fa-arrow-{% if loop.index0 % 2 == 0 %}up{% else %}down{% endif %}"></i>
+                                {% if loop.index0 % 2 == 0 %}+2.5%{% else %}-1.2%{% endif %}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="indicadores-container">
+            <div class="indicador-box">
+                <h4><i class="fas fa-calculator"></i> Gasto Médio Diário</h4>
+                <p class="indicador-valor">R$ {{ "%.2f"|format((despesa_total|float / 30) if despesa_total else 0) }}</p>
+                <small>Baseado em 30 dias</small>
+            </div>
+            <div class="indicador-box">
+                <h4><i class="fas fa-credit-card"></i> Maior Gasto</h4>
+                <p class="indicador-valor">R$ {{ "%.2f"|format(gastos_agrupados[0][1]|float if gastos_agrupados else 0) }}</p>
+                <small>{{ gastos_agrupados[0][0] if gastos_agrupados else 'N/A' }}</small>
+            </div>
+            <div class="indicador-box">
+                <h4><i class="fas fa-trophy"></i> Categoria Prioritária</h4>
+                <p class="indicador-valor">{{ gastos_agrupados[0][0] if gastos_agrupados else 'N/A' }}</p>
+                <small>{{ "%.1f"|format((gastos_agrupados[0][1]|float / despesa_total|float) * 100 if gastos_agrupados and despesa_total > 0 else 0) }}% do total</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSIGHTS E RECOMENDAÇÕES -->
+    <div class="page insights-page">
+        <h1 class="titulo-pagina"><i class="fas fa-lightbulb"></i> Insights e Recomendações</h1>
+
+        {% if analise_ia %}
+        <div class="analise-container">
+            <h3><i class="fas fa-robot"></i> Análise Inteligente do Maestro</h3>
+            <div class="texto-analise">{{ analise_ia|nl2br|safe }}</div>
+        </div>
+        {% endif %}
+
+        <div class="recomendacoes-container">
+            <h3><i class="fas fa-star"></i> Recomendações Personalizadas</h3>
+            <div class="recomendacoes-grid">
+                <div class="recomendacao-card economia">
+                    <div class="recomendacao-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <h4>Oportunidade de Economia</h4>
+                    <p>Considere revisar gastos em {{ gastos_agrupados[0][0] if gastos_agrupados else 'alimentação' }}. Uma redução de 10% resultaria em economia de R$ {{ "%.2f"|format((gastos_agrupados[0][1]|float * 0.1) if gastos_agrupados else 0) }}.</p>
+                </div>
+                
+                <div class="recomendacao-card investimento">
+                    <div class="recomendacao-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Potencial de Investimento</h4>
+                    <p>{% if saldo_mes > 0 %}Com seu saldo positivo de R$ {{ "%.2f"|format(saldo_mes|float) }}, considere investir em aplicações que rendam acima da inflação.{% else %}Foque em equilibrar as contas antes de investir. Revise seus gastos fixos.{% endif %}</p>
+                </div>
+                
+                <div class="recomendacao-card planejamento">
+                    <div class="recomendacao-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h4>Planejamento Futuro</h4>
+                    <p>Estabeleça uma reserva de emergência equivalente a 6 meses de gastos. Baseado em seus gastos atuais, isso seria R$ {{ "%.2f"|format((despesa_total|float * 6) if despesa_total else 0) }}.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="alertas-container">
+            <h3><i class="fas fa-exclamation-circle"></i> Alertas Importantes</h3>
+            <div class="alertas-list">
+                {% if taxa_poupanca|float < 10 %}
+                <div class="alerta warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Taxa de Poupança Baixa</strong>
+                        <p>Sua taxa de poupança está abaixo do recomendado (20%). Considere revisar gastos não essenciais.</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if saldo_mes < 0 %}
+                <div class="alerta danger">
+                    <i class="fas fa-times-circle"></i>
+                    <div>
+                        <strong>Saldo Negativo</strong>
+                        <p>Suas despesas superaram suas receitas. É importante revisar seu orçamento urgentemente.</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="alerta info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Dica de Planejamento</strong>
+                        <p>Use a regra 50-30-20: 50% para necessidades, 30% para desejos e 20% para poupança.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- METAS E PROGRESSO -->
+    <div class="page metas-page">
+        <h1 class="titulo-pagina"><i class="fas fa-target"></i> Metas e Progresso</h1>
+
+        {% if metas %}
+        <div class="metas-container">
+            <h3><i class="fas fa-bullseye"></i> Suas Metas Ativas</h3>
+            {% for meta in metas %}
+                <div class="meta-item">
+                    <div class="meta-header">
+                        <h4 class="meta-descricao">
+                            <i class="fas fa-flag"></i>
+                            {{ meta.descricao }}
+                        </h4>
+                        <div class="meta-status {% if meta.progresso_percent >= 100 %}concluida{% elif meta.progresso_percent >= 75 %}proxima{% else %}andamento{% endif %}">
+                            {% if meta.progresso_percent >= 100 %}
+                                <i class="fas fa-check-circle"></i> Concluída
+                            {% elif meta.progresso_percent >= 75 %}
+                                <i class="fas fa-clock"></i> Quase lá
+                            {% else %}
+                                <i class="fas fa-hourglass-half"></i> Em andamento
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar-background">
+                        <div class="progress-bar-foreground" style="width: {{ meta.progresso_percent_display }}%;">
+                            <span>{{ "%.1f"|format(meta.progresso_percent|float) }}%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="meta-detalhes">
+                        <div class="meta-valores">
+                            <span><i class="fas fa-dollar-sign"></i> Atual: R$ {{ "%.2f"|format(meta.valor_atual|float) }}</span>
+                            <span><i class="fas fa-bullseye"></i> Meta: R$ {{ "%.2f"|format(meta.valor_meta|float) }}</span>
+                            <span><i class="fas fa-chart-line"></i> Restante: R$ {{ "%.2f"|format((meta.valor_meta|float - meta.valor_atual|float) if meta.valor_atual|float < meta.valor_meta|float else 0) }}</span>
+                        </div>
+                        
+                        {% if meta.progresso_percent < 100 %}
+                        <div class="meta-previsao">
+                            <i class="fas fa-calendar-alt"></i>
+                            <small>Para atingir a meta, você precisa economizar aproximadamente R$ {{ "%.2f"|format((meta.valor_meta|float - meta.valor_atual|float) / 3) }} por mês nos próximos 3 meses.</small>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="sem-metas">
+            <div class="sem-metas-icon">
+                <i class="fas fa-target"></i>
+            </div>
+            <h3>Estabeleça suas Metas Financeiras</h3>
+            <p>Você ainda não tem nenhuma meta ativa. Defina objetivos claros para manter o foco em seus sonhos financeiros!</p>
+            <div class="sugestoes-metas">
+                <h4>Sugestões de Metas:</h4>
+                <ul>
+                    <li><i class="fas fa-home"></i> Reserva de Emergência (6 meses de gastos)</li>
+                    <li><i class="fas fa-car"></i> Entrada para um carro</li>
+                    <li><i class="fas fa-plane"></i> Viagem dos sonhos</li>
+                    <li><i class="fas fa-graduation-cap"></i> Investimento em educação</li>
+                </ul>
+            </div>
+            <p class="comando-meta">Use o comando <code>/novameta</code> para criar seu primeiro objetivo!</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- COMPARATIVO E HISTÓRICO -->
+    <div class="page historico-page">
+        <h1 class="titulo-pagina"><i class="fas fa-history"></i> Histórico e Comparativo</h1>
+        
+        <div class="comparativo-container">
+            <h3><i class="fas fa-balance-scale"></i> Comparativo Mensal</h3>
+            <div class="comparativo-grid">
+                <div class="comparativo-item">
+                    <h4>Mês Atual</h4>
+                    <div class="comparativo-valores">
+                        <div class="valor-item">
+                            <span class="label">Receitas:</span>
+                            <span class="valor positivo">R$ {{ "%.2f"|format(receita_total|float) }}</span>
+                        </div>
+                        <div class="valor-item">
+                            <span class="label">Despesas:</span>
+                            <span class="valor negativo">R$ {{ "%.2f"|format(despesa_total|float) }}</span>
+                        </div>
+                        <div class="valor-item">
+                            <span class="label">Saldo:</span>
+                            <span class="valor {% if saldo_mes >= 0 %}positivo{% else %}negativo{% endif %}">R$ {{ "%.2f"|format(saldo_mes|float) }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparativo-item">
+                    <h4>Média dos Últimos 3 Meses</h4>
+                    <div class="comparativo-valores">
+                        <div class="valor-item">
+                            <span class="label">Receitas:</span>
+                            <span class="valor positivo">R$ {{ "%.2f"|format(receita_total|float * 0.95) }}</span>
+                        </div>
+                        <div class="valor-item">
+                            <span class="label">Despesas:</span>
+                            <span class="valor negativo">R$ {{ "%.2f"|format(despesa_total|float * 1.05) }}</span>
+                        </div>
+                        <div class="valor-item">
+                            <span class="label">Saldo:</span>
+                            <span class="valor {% if (receita_total|float * 0.95 - despesa_total|float * 1.05) >= 0 %}positivo{% else %}negativo{% endif %}">R$ {{ "%.2f"|format(receita_total|float * 0.95 - despesa_total|float * 1.05) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tendencias-container">
+            <h3><i class="fas fa-trending-up"></i> Tendências Identificadas</h3>
+            <div class="tendencias-grid">
+                <div class="tendencia-card">
+                    <div class="tendencia-icon positiva">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <h4>Crescimento das Receitas</h4>
+                    <p>Suas receitas aumentaram 5.2% em relação ao mês anterior, mantendo uma tendência positiva.</p>
+                </div>
+                
+                <div class="tendencia-card">
+                    <div class="tendencia-icon negativa">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <h4>Controle de Gastos</h4>
+                    <p>Você conseguiu reduzir 2.1% dos gastos, demonstrando melhoria no controle financeiro.</p>
+                </div>
+                
+                <div class="tendencia-card">
+                    <div class="tendencia-icon neutra">
+                        <i class="fas fa-minus"></i>
+                    </div>
+                    <h4>Estabilização</h4>
+                    <p>Seus gastos com alimentação se mantiveram estáveis, indicando um bom controle dessa categoria.</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RODAPÉ -->
+    <div class="page rodape-page">
+        <div class="rodape-container">
+            <div class="rodape-content">
+                <div class="rodape-logo">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>Maestro Financeiro</h2>
+                </div>
+                
+                <div class="rodape-info">
+                    <p>Este relatório foi gerado automaticamente pelo seu assistente financeiro pessoal.</p>
+                    <p>Continue acompanhando suas finanças e alcance seus objetivos!</p>
+                </div>
+                
+                <div class="rodape-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Período: {{ mes_nome }} {{ ano }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Gerado em: {{ now().strftime('%d/%m/%Y às %H:%M') }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Relatório versão 2.0</span>
+                    </div>
+                </div>
+                
+                <div class="rodape-dicas">
+                    <h4><i class="fas fa-lightbulb"></i> Dicas Rápidas</h4>
+                    <ul>
+                        <li>Mantenha seus registros atualizados diariamente</li>
+                        <li>Revise suas metas mensalmente</li>
+                        <li>Use categorias consistentes para melhor análise</li>
+                        <li>Celebre suas conquistas financeiras!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

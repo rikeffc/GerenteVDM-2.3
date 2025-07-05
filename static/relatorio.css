@@ -1,0 +1,1041 @@
+/* ========================================
+   RELATÓRIO FINANCEIRO PROFISSIONAL CSS
+   Designer: Claude Sonnet 4
+   Versão: 2.0 - Otimizado para PDF
+   ======================================== */
+
+/* IMPORTAÇÃO DE FONTES */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+/* RESET E CONFIGURAÇÕES BÁSICAS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* CONFIGURAÇÕES GLOBAIS PARA PDF */
+@page {
+    size: A4;
+    margin: 2cm;
+    @bottom-center {
+        content: "Página " counter(page) " de " counter(pages);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 8pt;
+        color: #666666;
+    }
+    @bottom-right {
+        content: "Gerado em " attr(data-date);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 8pt;
+        color: #666666;
+    }
+}
+
+/* CORPO DO DOCUMENTO */
+html, body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt;
+    line-height: 1.6;
+    color: #333333;
+    background-color: #FFFFFF;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* SISTEMA DE PÁGINAS */
+.page {
+    page-break-after: always;
+    page-break-inside: avoid;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+.page:last-child {
+    page-break-after: auto;
+}
+
+/* TIPOGRAFIA HIERÁRQUICA */
+h1 {
+    font-family: 'Merriweather', serif;
+    font-size: 24pt;
+    font-weight: bold;
+    color: #1A2B4C;
+    margin: 0 0 1.2em 0;
+    line-height: 1.3;
+}
+
+h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 18pt;
+    font-weight: bold;
+    color: #1A2B4C;
+    margin: 1.5em 0 1em 0;
+    line-height: 1.4;
+}
+
+h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14pt;
+    font-weight: 600;
+    color: #1A2B4C;
+    margin: 1.2em 0 0.8em 0;
+    line-height: 1.4;
+}
+
+h4 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12pt;
+    font-weight: 600;
+    color: #333333;
+    margin: 1em 0 0.6em 0;
+}
+
+p {
+    margin: 0 0 0.8em 0;
+    text-align: justify;
+}
+
+/* TÍTULOS DE PÁGINA */
+.titulo-pagina {
+    border-bottom: 2px solid #1A2B4C;
+    padding-bottom: 0.5em;
+    margin-bottom: 1.5em;
+    page-break-after: avoid;
+}
+
+.titulo-pagina i {
+    margin-right: 0.5em;
+    color: #1A2B4C;
+}
+
+/* ==================== CAPA ==================== */
+.capa-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 3cm;
+}
+
+.capa-container {
+    max-width: 600px;
+    width: 100%;
+}
+
+.logo-container {
+    margin-bottom: 2em;
+}
+
+.logo-icon {
+    font-size: 48pt;
+    color: #1A2B4C;
+    text-shadow: 0 2px 4px rgba(26, 43, 76, 0.1);
+}
+
+.titulo-principal {
+    font-size: 32pt;
+    margin-bottom: 0.5em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.subtitulo {
+    font-size: 20pt;
+    color: #666666;
+    font-weight: 400;
+    margin-bottom: 1.5em;
+}
+
+.nome-usuario {
+    font-size: 12pt;
+    color: #666666;
+    margin-bottom: 2em;
+    font-style: italic;
+}
+
+.data-geracao {
+    font-size: 10pt;
+    color: #999999;
+    margin-bottom: 2em;
+}
+
+.data-geracao i {
+    margin-right: 0.5em;
+}
+
+.highlight-box {
+    background-color: #f8f9fa;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    margin: 2em 0;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+.highlight-box.positivo {
+    border-left: 4px solid #28A745;
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+.highlight-box.negativo {
+    border-left: 4px solid #DC3545;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.highlight-box h3 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.highlight-box h3 i {
+    margin-right: 0.5em;
+}
+
+.resumo-executivo {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    margin-top: 2em;
+    page-break-inside: avoid;
+}
+
+.resumo-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8em;
+    margin-top: 1em;
+}
+
+.resumo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.resumo-item:last-child {
+    border-bottom: none;
+}
+
+.resumo-label {
+    font-weight: 600;
+    color: #333333;
+}
+
+.resumo-valor {
+    font-weight: 700;
+    font-size: 11pt;
+}
+
+/* ==================== DASHBOARD ==================== */
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5em;
+    margin: 2em 0;
+    page-break-inside: avoid;
+}
+
+.kpi-box {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    page-break-inside: avoid;
+}
+
+.kpi-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20pt;
+    color: #FFFFFF;
+    flex-shrink: 0;
+}
+
+.kpi-box.receita .kpi-icon {
+    background-color: #28A745;
+}
+
+.kpi-box.despesa .kpi-icon {
+    background-color: #DC3545;
+}
+
+.kpi-box.saldo .kpi-icon {
+    background-color: #17A2B8;
+}
+
+.kpi-box.poupanca .kpi-icon {
+    background-color: #6F42C1;
+}
+
+.kpi-content h4 {
+    margin: 0 0 0.3em 0;
+    font-size: 10pt;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.valor {
+    font-size: 16pt;
+    font-weight: 700;
+    margin: 0;
+}
+
+.kpi-meta {
+    font-size: 8pt;
+    color: #999999;
+    font-style: italic;
+}
+
+.graficos-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+    margin: 2em 0;
+}
+
+.grafico-container {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+.grafico-container h3 {
+    margin-top: 0;
+    margin-bottom: 1em;
+    text-align: left;
+}
+
+.grafico-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.grafico-placeholder {
+    padding: 2em;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    color: #666666;
+}
+
+.grafico-placeholder i {
+    font-size: 24pt;
+    margin-bottom: 0.5em;
+    display: block;
+}
+
+/* ==================== TABELAS ==================== */
+.tabela-container {
+    margin: 2em 0;
+    page-break-inside: avoid;
+}
+
+.tabela-moderna {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tabela-moderna thead {
+    background-color: #1A2B4C;
+    color: #FFFFFF;
+}
+
+.tabela-moderna th {
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tabela-moderna td {
+    padding: 12px;
+    border-bottom: 1px solid #EEEEEE;
+    font-size: 10pt;
+}
+
+.tabela-moderna tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabela-moderna tbody tr:hover {
+    background-color: #f1f3f4;
+}
+
+.categoria-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.categoria-color {
+    font-size: 8pt;
+}
+
+.valor-cell {
+    text-align: right;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.percent-bar {
+    position: relative;
+    background-color: #EEEEEE;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.percent-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #28A745, #20C997);
+    transition: width 0.3s ease;
+}
+
+.percent-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8pt;
+    font-weight: 600;
+    color: #333333;
+}
+
+.tendencia {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    font-size: 9pt;
+    font-weight: 600;
+}
+
+.tendencia.alta {
+    color: #28A745;
+}
+
+.tendencia.baixa {
+    color: #DC3545;
+}
+
+/* ==================== INDICADORES ==================== */
+.indicadores-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5em;
+    margin: 2em 0;
+}
+
+.indicador-box {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+.indicador-box h4 {
+    margin-top: 0;
+    color: #666666;
+    font-size: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.indicador-valor {
+    font-size: 18pt;
+    font-weight: 700;
+    color: #1A2B4C;
+    margin: 0.5em 0;
+}
+
+.indicador-box small {
+    color: #999999;
+    font-size: 8pt;
+}
+
+/* ==================== RECOMENDAÇÕES ==================== */
+.recomendacoes-container {
+    margin: 2em 0;
+}
+
+.recomendacoes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5em;
+    margin-top: 1em;
+}
+
+.recomendacao-card {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    display: flex;
+    gap: 1em;
+    page-break-inside: avoid;
+}
+
+.recomendacao-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18pt;
+    color: #FFFFFF;
+    flex-shrink: 0;
+}
+
+.recomendacao-card.economia .recomendacao-icon {
+    background-color: #28A745;
+}
+
+.recomendacao-card.investimento .recomendacao-icon {
+    background-color: #17A2B8;
+}
+
+.recomendacao-card.planejamento .recomendacao-icon {
+    background-color: #6F42C1;
+}
+
+.recomendacao-card h4 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color: #1A2B4C;
+}
+
+/* ==================== ALERTAS ==================== */
+.alertas-container {
+    margin: 2em 0;
+}
+
+.alertas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.alerta {
+    display: flex;
+    gap: 1em;
+    padding: 1em;
+    border-radius: 8px;
+    border-left: 4px solid;
+    page-break-inside: avoid;
+}
+
+.alerta.warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left-color: #FFC107;
+}
+
+.alerta.danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: #DC3545;
+}
+
+.alerta.info {
+    background-color: rgba(23, 162, 184, 0.1);
+    border-left-color: #17A2B8;
+}
+
+.alerta i {
+    font-size: 16pt;
+    margin-top: 0.2em;
+    flex-shrink: 0;
+}
+
+.alerta.warning i {
+    color: #FFC107;
+}
+
+.alerta.danger i {
+    color: #DC3545;
+}
+
+.alerta.info i {
+    color: #17A2B8;
+}
+
+.alerta strong {
+    display: block;
+    margin-bottom: 0.5em;
+    color: #333333;
+}
+
+/* ==================== METAS ==================== */
+.metas-container {
+    margin: 2em 0;
+}
+
+.meta-item {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    margin-bottom: 1.5em;
+    page-break-inside: avoid;
+}
+
+.meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.meta-descricao {
+    margin: 0;
+    color: #1A2B4C;
+}
+
+.meta-status {
+    padding: 0.3em 0.8em;
+    border-radius: 15px;
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-status.concluida {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28A745;
+}
+
+.meta-status.proxima {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #FFC107;
+}
+
+.meta-status.andamento {
+    background-color: rgba(23, 162, 184, 0.1);
+    color: #17A2B8;
+}
+
+.progress-bar-background {
+    background-color: #EEEEEE;
+    height: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin: 1em 0;
+}
+
+.progress-bar-foreground {
+    height: 100%;
+    background: linear-gradient(90deg, #1A2B4C, #17A2B8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 9pt;
+    font-weight: 600;
+    transition: width 0.3s ease;
+}
+
+.meta-detalhes {
+    margin-top: 1em;
+}
+
+.meta-valores {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    margin-bottom: 0.5em;
+    flex-wrap: wrap;
+}
+
+.meta-valores span {
+    font-size: 9pt;
+    color: #666666;
+}
+
+.meta-previsao {
+    font-size: 9pt;
+    color: #999999;
+    font-style: italic;
+    padding-top: 0.5em;
+    border-top: 1px solid #f0f0f0;
+}
+
+.sem-metas {
+    text-align: center;
+    padding: 3em 2em;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    page-break-inside: avoid;
+}
+
+.sem-metas-icon i {
+    font-size: 48pt;
+    color: #CCCCCC;
+    margin-bottom: 1em;
+}
+
+.sugestoes-metas {
+    margin: 2em 0;
+    text-align: left;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sugestoes-metas ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sugestoes-metas li {
+    padding: 0.5em 0;
+    color: #666666;
+}
+
+.sugestoes-metas li i {
+    margin-right: 0.5em;
+    color: #1A2B4C;
+}
+
+.comando-meta {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 4px;
+    padding: 1em;
+    margin-top: 1em;
+    font-style: italic;
+}
+
+.comando-meta code {
+    background-color: #f8f9fa;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    color: #1A2B4C;
+}
+
+/* ==================== COMPARATIVO ==================== */
+.comparativo-container {
+    margin: 2em 0;
+}
+
+.comparativo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+    margin-top: 1em;
+}
+
+.comparativo-item {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    page-break-inside: avoid;
+}
+
+.comparativo-item h4 {
+    margin-top: 0;
+    margin-bottom: 1em;
+    text-align: center;
+    color: #1A2B4C;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 0.5em;
+}
+
+.comparativo-valores {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+}
+
+.valor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    font-weight: 600;
+    color: #666666;
+}
+
+.tendencias-container {
+    margin: 2em 0;
+}
+
+.tendencias-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5em;
+    margin-top: 1em;
+}
+
+.tendencia-card {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+.tendencia-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18pt;
+    color: #FFFFFF;
+    margin: 0 auto 1em auto;
+}
+
+.tendencia-icon.positiva {
+    background-color: #28A745;
+}
+
+.tendencia-icon.negativa {
+    background-color: #DC3545;
+}
+
+.tendencia-icon.neutra {
+    background-color: #6C757D;
+}
+
+.tendencia-card h4 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color: #1A2B4C;
+}
+
+/* ==================== RODAPÉ ==================== */
+.rodape-page {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 2em;
+}
+
+.rodape-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rodape-content {
+    text-align: center;
+}
+
+.rodape-logo {
+    margin-bottom: 2em;
+}
+
+.rodape-logo i {
+    font-size: 36pt;
+    color: #1A2B4C;
+    margin-bottom: 0.5em;
+}
+
+.rodape-logo h2 {
+    margin: 0;
+    color: #1A2B4C;
+}
+
+.rodape-info {
+    margin: 2em 0;
+    color: #666666;
+}
+
+.rodape-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    margin: 2em 0;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    color: #666666;
+    font-size: 9pt;
+}
+
+.stat-item i {
+    color: #1A2B4C;
+}
+
+.rodape-dicas {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    margin-top: 2em;
+    text-align: left;
+}
+
+.rodape-dicas h4 {
+    margin-top: 0;
+    text-align: center;
+    color: #1A2B4C;
+}
+
+.rodape-dicas ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 1em 0 0 0;
+}
+
+.rodape-dicas li {
+    padding: 0.3em 0;
+    color: #666666;
+    font-size: 9pt;
+}
+
+.rodape-dicas li::before {
+    content: "→ ";
+    color: #1A2B4C;
+    font-weight: bold;
+    margin-right: 0.5em;
+}
+
+/* ==================== CORES DE VALORES ==================== */
+.verde, .positivo {
+    color: #28A745 !important;
+}
+
+.vermelho, .negativo {
+    color: #DC3545 !important;
+}
+
+.azul, .neutro {
+    color: #17A2B8 !important;
+}
+
+/* ==================== ANÁLISE IA ==================== */
+.analise-container {
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    padding: 1.5em;
+    margin: 2em 0;
+    page-break-inside: avoid;
+}
+
+.texto-analise {
+    line-height: 1.7;
+    color: #333333;
+}
+
+/* ==================== RESPONSIVIDADE PARA IMPRESSÃO ==================== */
+@media print {
+    body {
+        font-size: 9pt;
+        line-height: 1.5;
+    }
+    
+    .kpi-container,
+    .graficos-row,
+    .indicadores-container,
+    .tendencias-grid {
+        grid-template-columns: 1fr;
+        gap: 1em;
+    }
+    
+    .comparativo-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 { font-size: 20pt; }
+    h2 { font-size: 16pt; }
+    h3 { font-size: 12pt; }
+    
+    .titulo-principal { font-size: 28pt; }
+    .subtitulo { font-size: 18pt; }
+    
+    .kpi-box,
+    .recomendacao-card,
+    .meta-item,
+    .comparativo-item,
+    .tendencia-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .tabela-moderna {
+        break-inside: avoid;
+    }
+    
+    .graficos-row {
+        display: block;
+    }
+    
+    .grafico-container {
+        margin-bottom: 2em;
+    }
+}
+
+/* ==================== OTIMIZAÇÕES FINAIS ==================== */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+table {
+    width: 100%;
+    page-break-inside: avoid;
+}
+
+.no-break {
+    page-break-inside: avoid;
+}
+
+/* Garantir que elementos importantes não quebrem */
+.kpi-box,
+.recomendacao-card,
+.meta-item,
+.alerta,
+.indicador-box,
+.tendencia-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* Espaçamento consistente */
+section,
+.container,
+.content-block {
+    margin-bottom: 2em;
+}
+
+/* Última linha de otimização para PDF */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
