@@ -319,10 +319,9 @@ Embora seja um projeto pessoal, estou aberto a sugestões e melhorias!
 
 **Henrique de Jesus Freitas Pereira**
 - 🎓 Engenharia de Software - Estácio de Sá (2025-2029)
-- 📧 Email: [seu-email@exemplo.com]
+- 📧 Email: Henrique.jfp@outlook.com
 - 💼 LinkedIn: [linkedin.com/in/seu-perfil](https://linkedin.com/in/seu-perfil)
-- 🐙 GitHub: [@seu-usuario](https://github.com/seu-usuario)
-- 📱 WhatsApp: [(21) 9XXXX-XXXX]
+- 🐙 GitHub: [@seu-usuario]([https://github.com/seu-usuari](https://www.linkedin.com/in/henrique-jfp/)
 
 ---
 
